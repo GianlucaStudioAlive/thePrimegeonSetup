@@ -30,7 +30,7 @@ sudo apt install -y \
 # --- Oh My Zsh ---
 echo "[2/6] Oh My Zsh + Powerlevel10k..."
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
-  RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  RUNZSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
 if [ ! -d "$HOME/.oh-my-zsh/custom/themes/powerlevel10k" ]; then
