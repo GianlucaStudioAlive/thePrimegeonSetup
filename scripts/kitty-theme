@@ -1,0 +1,50 @@
+#!/bin/bash
+# Cambia tema Kitty rapidamente
+# Uso: kitty-theme [nome_tema]
+# Senza argomenti mostra i temi disponibili e li fa scegliere
+
+THEMES_DIR="$HOME/.config/kitty/themes"
+KITTY_CONF="$HOME/.config/kitty/kitty.conf"
+
+# Lista temi disponibili
+themes=()
+for f in "$THEMES_DIR"/*.conf; do
+    [ -f "$f" ] && themes+=("$(basename "$f" .conf)")
+done
+
+if [ ${#themes[@]} -eq 0 ]; then
+    echo "Nessun tema trovato in $THEMES_DIR"
+    exit 1
+fi
+
+# Se passato come argomento
+if [ -n "$1" ]; then
+    choice="$1"
+else
+    # Menu interattivo
+    echo "Temi disponibili:"
+    for i in "${!themes[@]}"; do
+        echo "  $((i+1)). ${themes[$i]}"
+    done
+    echo ""
+    read -p "Scegli tema (numero o nome): " input
+
+    # Se è un numero
+    if [[ "$input" =~ ^[0-9]+$ ]] && [ "$input" -ge 1 ] && [ "$input" -le ${#themes[@]} ]; then
+        choice="${themes[$((input-1))]}"
+    else
+        choice="$input"
+    fi
+fi
+
+# Verifica che il tema esista
+if [ ! -f "$THEMES_DIR/$choice.conf" ]; then
+    echo "Tema '$choice' non trovato. Temi disponibili: ${themes[*]}"
+    exit 1
+fi
+
+# Aggiorna kitty.conf
+sed -i "s|^include themes/.*\.conf|include themes/$choice.conf|" "$KITTY_CONF"
+
+echo "Tema cambiato in: $choice"
+echo "Premi Ctrl+Shift+F5 per ricaricare, oppure riavvia Kitty."

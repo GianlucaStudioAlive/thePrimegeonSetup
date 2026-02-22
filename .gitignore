@@ -1,0 +1,8 @@
+# Plugin gestiti da lazy.nvim (si scaricano da soli)
+nvim/plugin/
+
+# File generati
+*.swp
+*.swo
+*~
+.DS_Store
