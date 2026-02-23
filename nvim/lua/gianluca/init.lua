@@ -1,7 +1,7 @@
 vim.opt.termguicolors = true
 
-require("gianluca.set")
 require("gianluca.remap")
+require("gianluca.set")
 require("gianluca.lazy")
 
 require("catppuccin").setup({

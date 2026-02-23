@@ -30,9 +30,11 @@ local autosave_group = vim.api.nvim_create_augroup("AutoSave", { clear = true })
 vim.api.nvim_create_autocmd({ "TextChangedI", "TextChanged" }, {
   group = autosave_group,
   callback = function()
+    -- Ignora buffer speciali (Telescope, netrw, prompt, ecc.)
+    if vim.bo.buftype ~= "" then return end
     if vim.bo.modified then
       vim.defer_fn(function()
-        if vim.bo.modified then
+        if vim.bo.modified and vim.bo.buftype == "" then
           vim.cmd("silent update")
         end
       end, 300)
